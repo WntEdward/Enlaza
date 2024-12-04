@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Tu Proyecto</title>
     <style>
         /* Estilos generales */
@@ -179,7 +178,8 @@
     <!-- Video Section -->
     <div class="video-container">
         <h2>Tu cámara en vivo</h2>
-        <img src="{{ url_for('video_feed') }}" alt="Cámara en Vivo">
+        <video id="video" width="640" height="480" autoplay></video>
+        <canvas id="canvas" style="display:none;"></canvas>
         <p class="prediction-text">Predicción: <span id="prediction">Esperando señal...</span></p>
     </div>
 
@@ -203,5 +203,44 @@
     <footer id="contact">
         <p>&copy; 2024 Tu Proyecto. Todos los derechos reservados.</p>
     </footer>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Acceder a la cámara
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                console.log("Error al acceder a la cámara: ", err);
+            });
+
+        // Función para capturar frames y hacer predicción
+        function captureFrame() {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            // Convertir el frame a base64 y enviarlo al backend para predicción
+            const base64Image = canvas.toDataURL('image/jpeg');
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ image: base64Image })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Mostrar las predicciones en la página
+                console.log('Predicción:', data.prediction);
+                document.getElementById('prediction').innerText = data.prediction;
+            })
+            .catch(error => console.error('Error en la predicción:', error));
+        }
+
+        // Llamar a la función de captura cada 100ms
+        setInterval(captureFrame, 100);
+    </script>
 </body>
 </html>
