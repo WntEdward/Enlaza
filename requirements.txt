@@ -1,6 +1,6 @@
 Flask==2.2.2
 tensorflow==2.13.0
-opencv-python-headless==4.7.0.68  # Usamos opencv sin GUI para entornos de servidor
+opencv-python-headless
 mediapipe==0.9.0
 pillow==9.5.0
 gunicorn==20.1.1
