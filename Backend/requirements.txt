@@ -1,6 +1,0 @@
-flask
-tensorflow
-opencv-python
-mediapipe
-pillow
-gunicorn==20.1.0
