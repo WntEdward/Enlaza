@@ -1,22 +1,34 @@
-import cv2
-import mediapipe as mp
-import numpy as np
-from tensorflow.keras.models import load_model
-import time
-import tensorflow as tf
-from flask import Flask, Response, render_template
 import os
+import sys
+import time
+import base64
+import numpy as np
+import tensorflow as tf
+from flask import Flask, request, jsonify, render_template, Response
+from tensorflow.keras.models import load_model
+import mediapipe as mp
+import cv2
 
-# Desactivar el registro de TensorFlow y Keras
-tf.get_logger().setLevel('ERROR')  # Desactivar los mensajes de advertencia
+# Verificar si el script se está ejecutando como un archivo .exe empaquetado por PyInstaller
+if getattr(sys, 'frozen', False):
+    model_path = os.path.join(sys._MEIPASS, 'modelo.h5')  # Ruta para el modelo cuando el archivo está empaquetado
+    hand_landmark_path = os.path.join(sys._MEIPASS, 'mediapipe')  # Ruta para los archivos de mediapipe
+else:
+    model_path = os.path.join(os.getcwd(), 'Backend', 'modelo.h5')  # Ruta local cuando el script no está empaquetado
+    hand_landmark_path = 'mediapipe'  # Ruta local para mediapipe
 
-# Obtener la ruta del modelo en la misma carpeta que el archivo .py
-model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'modelo.h5')
+# Inicializar Flask
+app = Flask(_name_)
 
-# Cargar el modelo entrenado sin barra de progreso (verbose=0)
-model = load_model(model_path, compile=False)
+# Intentar cargar el modelo de Keras y manejar el error si el formato es incorrecto
+try:
+    model = load_model(model_path, compile=False)
+    print("Modelo cargado correctamente.")
+except ValueError as e:
+    print(f"Error al cargar el modelo: {e}")
+    sys.exit(1)  # Terminar el script si el modelo no se puede cargar
 
-# Inicializar MediaPipe y OpenCV
+# Inicializar MediaPipe para la detección de manos
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7)
 
@@ -24,17 +36,14 @@ hands = mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7)
 class_names = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "a", "e", "i", "u", "o", "b", "c", "d", "f", "g", "h", 
                "l", "m", "n", "p", "r", "s", "t", "v", "w", "y", "k", "q", "x", "z", "te amo", "mucho", "yo"]
 
-# Crear la aplicación Flask
-app = Flask(__name__)
-
-# Variables globales para deletrear palabras
+# Variables para la predicción de palabras
 current_word = ""  # Palabra que se está formando
 last_letter = ""  # Última letra detectada para evitar duplicados consecutivos
 frame_counter = 0  # Contador de fotogramas para estabilizar la letra detectada
 stabilization_frames = 13  # Número de fotogramas consecutivos para estabilizar una letra
 words_history = []  # Lista para almacenar las últimas palabras
 
-# Variables para limpiar la palabra
+# Variables para manejar el tiempo
 last_detection_time = time.time()  # Último momento en que se detectó una letra
 timeout = 2  # Tiempo en segundos sin detección para borrar la palabra
 clear_all_timeout = 5  # Tiempo para borrar todas las palabras después de 5 segundos sin detección
@@ -52,7 +61,7 @@ def generate_frames():
     cap = cv2.VideoCapture(0)  # Captura de la cámara local
 
     if not cap.isOpened():
-        return "No se pudo acceder a la cámara", 500  # Cambio aquí
+        return jsonify({"error": "No se pudo acceder a la cámara."}), 500
 
     while True:
         success, image = cap.read()
@@ -149,5 +158,5 @@ def video():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # Iniciar el servidor Flask
-if __name__ == "__main__":
+if _name_ == "_main_":
     app.run(host="0.0.0.0", port=5000)
