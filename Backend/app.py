@@ -11,22 +11,17 @@ import cv2
 
 # Verificar si el script se está ejecutando como un archivo .exe empaquetado por PyInstaller
 if getattr(sys, 'frozen', False):
-    model_path = os.path.join(sys._MEIPASS, 'modelo.h5')  # Ruta para el modelo cuando el archivo está empaquetado
+    model_path = os.path.join(sys._MEIPASS, 'mod_rec_chido.h5')  # Ruta para el modelo cuando el archivo está empaquetado
     hand_landmark_path = os.path.join(sys._MEIPASS, 'mediapipe')  # Ruta para los archivos de mediapipe
 else:
-    model_path = os.path.join(os.getcwd(), 'Backend', 'modelo.h5')  # Ruta local cuando el script no está empaquetado
+    model_path = 'modelo_reconocimiento_senas_1_tipo1_33 (2)'  # Ruta local cuando el script no está empaquetado
     hand_landmark_path = 'mediapipe'  # Ruta local para mediapipe
 
 # Inicializar Flask
 app = Flask(__name__)
 
-# Intentar cargar el modelo de Keras y manejar el error si el formato es incorrecto
-try:
-    model = load_model(model_path, compile=False)
-    print("Modelo cargado correctamente.")
-except ValueError as e:
-    print(f"Error al cargar el modelo: {e}")
-    sys.exit(1)  # Terminar el script si el modelo no se puede cargar
+# Cargar el modelo de Keras
+model = load_model(model_path, compile=False)
 
 # Inicializar MediaPipe para la detección de manos
 mp_hands = mp.solutions.hands
