@@ -6,12 +6,19 @@ from tensorflow.keras.models import load_model
 import base64
 import io
 from PIL import Image
+import os
 
 # Inicializar Flask
 app = Flask(__name__)
 
+# Obtener la ruta completa del archivo .h5
+current_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(current_dir, "modelo.h5")
+
 # Cargar el modelo
-model = load_model("modelo.h5", compile=False)
+model = load_model(model_path, compile=False)
+
+# Inicializar MediaPipe para detección de manos
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7)
 
