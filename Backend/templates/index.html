@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Proyecto</title>
+    <style>
+        /* Estilos generales */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            color: #212529;
+            background: linear-gradient(135deg, #313d49, #2f547a, #212529); /* Degradado de fondo */
+            height: 100vh; /* Asegura que el fondo ocupe toda la altura */
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Importar la fuente local */
+        @font-face {
+            font-family: 'Dancing Script';  /* Nombre que usaremos en CSS */
+            src: url('/static/fonts/DancingScript-Bold.ttf') format('truetype');  /* Ruta a la fuente */
+            font-weight: normal;
+            font-style: normal;
+        }
+
+       /* Header */
+        header {
+            background-color: #ffffff; /* Azul translúcido */
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;  /* Espacio entre los elementos */
+            align-items: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-container .logo {
+            width: 60px; /* Ajusta el tamaño de tu logo */
+            height: auto; /* Mantiene la relación de aspecto */
+            margin-right: 10px; /* Espacio entre el logo y el texto */
+        }
+
+        /* Texto de Enlaza con el tipo de letra Dancing Script */
+        .logo-container .logo-text {
+            font-family: 'Dancing Script', cursive; /* Usar la fuente local */
+            font-size: 2.5rem;
+            color: #2f547a;
+            font-weight: 700;
+        }
+
+        /* Menú */
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-end; /* Alineación a la derecha */
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: #5ca7fa;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #2f547a;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 80vh; /* Ajustamos la altura para que no ocupe toda la pantalla */
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin: 0;
+            font-weight: 700;
+            color: white;
+            font-family: Dancing Script; 
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        /* Video Container */
+        .video-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 10px auto;
+            text-align: center;
+        }
+
+        /* Mostrar la cámara en vivo */
+        #video {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        /* Texto de predicción */
+        .prediction-text {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            color: white;
+        }
+
+        /* Características */
+        .features {
+            display: flex;
+            justify-content: center;
+            margin: 50px 0;
+            padding: 0 20px;
+        }
+
+        .feature-item {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin: 0 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 300px;
+        }
+
+        .feature-item h3 {
+            font-size: 1.8rem;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .feature-item p {
+            font-size: 1.1rem;
+            color: #212529;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #212529;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <img src="static/enlaza.jpg" alt="Logo" class="logo">
+            <div class="logo-text">Enlaza</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Traductor de LSM</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Prototipo de detección</h1>
+
+            <!-- Contenedor para el video -->
+            <div class="video-container">
+                <video id="video" autoplay></video>
+            </div>
+
+            <!-- Texto de la predicción -->
+            <div class="prediction-text">
+                <p>Detectando la seña...</p> <!-- Este texto puede actualizarse dinámicamente con JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Características -->
+    <section class="features">
+        <div class="feature-item">
+            <h3>Accesibilidad en Tiempo Real</h3>
+            <p>Traducción en vivo de Lengua de Señas Mexicana.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Innovación e inclusión</h3>
+            <p>Rompiendo barreras de comunicación.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Futura Integración</h3>
+            <p>Integración con plataformas de videollamadas existentes como Zoom y Teams.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Enlaza | Todos los derechos reservados | Prueba</p>
+    </footer>
+
+    <script>
+        // Acceder a la cámara
+        const videoElement = document.getElementById("video");
+
+        // Configurar la cámara
+        async function setupCamera() {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: "user" }  // Usar la cámara frontal
+            });
+            videoElement.srcObject = stream;
+        }
+
+        // Iniciar la cámara cuando se carga la página
+        window.onload = setupCamera;
+    </script>
+</body>
+</html>
