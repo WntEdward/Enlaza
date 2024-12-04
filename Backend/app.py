@@ -14,7 +14,7 @@ if getattr(sys, 'frozen', False):
     model_path = os.path.join(sys._MEIPASS, 'modelo.h5')  # Ruta para el modelo cuando el archivo está empaquetado
     hand_landmark_path = os.path.join(sys._MEIPASS, 'mediapipe')  # Ruta para los archivos de mediapipe
 else:
-    model_path = 'modelo_reconocimiento_senas_1_tipo1_33 (2)'  # Ruta local cuando el script no está empaquetado
+    model_path = 'modelo.h5'  # Ruta local cuando el script no está empaquetado
     hand_landmark_path = 'mediapipe'  # Ruta local para mediapipe
 
 # Inicializar Flask
