@@ -52,7 +52,7 @@ def generate_frames():
     cap = cv2.VideoCapture(0)  # Captura de la cámara local
 
     if not cap.isOpened():
-        return jsonify({"error": "No se pudo acceder a la cámara."}), 500
+        return "No se pudo acceder a la cámara", 500  # Cambio aquí
 
     while True:
         success, image = cap.read()
