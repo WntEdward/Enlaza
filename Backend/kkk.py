@@ -11,7 +11,7 @@ from PIL import Image
 app = Flask(__name__)
 
 # Cargar el modelo
-model = load_model("modelo_reconocimiento_senas_1_tipo1_33 (2).h5", compile=False)
+model = load_model("modelo.h5", compile=False)
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7)
 
